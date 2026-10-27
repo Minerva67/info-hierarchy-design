@@ -1,0 +1,17 @@
+/_blob/4024d47dae99e03b43d2198d118e8b82|字节跳动|46
+/_blob/698b0dec5988ef13761a697a4f85f906|腾讯|42
+/_blob/139913b588e7aaefe9aaf3031be1cd77|百度|44
+/_blob/89c6dffc51e810dbe25da12475dd0bad|亚马逊|40
+/_blob/3d0b47d22450691340f977053f728fa0|Google|44
+/_blob/fdd189b01e62de056840e168a6618adc|京东探索研究院|48
+/_blob/4689d4efea254a560f3bbd8f430b9a31|网易|44
+/_blob/cff4108dd016ebab032cf2f48250ad56|快看|46
+/_blob/ff9f73ceece8e083622b7c1929168a19|沃尔玛|40
+/_blob/db3b08596ef608b788c8f3bf79a12389|摩根大通|40
+/_blob/83c625b5267dec3644161bc6200ecbe0|高盛|44
+/_blob/606545aefc7324a6222bdefbcd20f218|麦肯锡|40
+/_blob/5f18faebc9ed28cbb06093309e4c3d08|Kimi 月之暗面|40
+/_blob/6f5c45bae3bbbbcbe35cf8516825b1bf|智谱|40
+/_blob/e1b61b2364db0d9fba26f09254e5201e|VAST Tripo|40
+/_blob/5d9e81673a2593010179308d9b207511|HeyGen|40
+/_blob/f91feff0b73b68c799e57ec765150bd4|北京大学|52
