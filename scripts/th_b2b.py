@@ -1,6 +1,11 @@
-from common import LOGO, MARK, Y, O, INK, grain
-import th_v3 as V, th_v4 as V4
-DARKLOGO='/_blob/0c637a0d8aa7617cdd8f586a18f8042a'
+from common import Y, O, INK, grain
+import content as V
+V4 = V
+def logo(T, dark=False, h=76):
+    c = T.get('logo_dark_fg', '#ffffff') if dark else T['ink']
+    return f'<span style="font-family:{T["df"]};font-size:{int(h*0.62)}px;font-weight:800;letter-spacing:-.02em;color:{c};white-space:nowrap;">{V.BRAND}<span style="color:{O};">.</span></span>'
+def mark(size=200, bg=None):
+    return f'<span aria-hidden="true" style="width:{size}px;height:{size}px;border-radius:50%;background:{bg or INK};color:{Y};display:inline-flex;align-items:center;justify-content:center;font-size:{int(size*0.5)}px;font-weight:900;">{V.BRAND[0]}</span>'
 T=None
 def css(**k): return ';'.join(f"{a.replace('_','-')}:{b}" for a,b in k.items())+';'
 def lab(t,c=None,s=None):
@@ -18,7 +23,7 @@ def band(x0,a0,b0,x1,a1,b1,fill):
 def sankey(W):
     P=T['panel']; H=760; top=150; S=3.2; drop=70; nw=14
     xA,xB,xC,xD=int(W*.238),int(W*.543),int(W*.82),int(W*.93)
-    hA=100*S; hB=52*S; hC=hB*0.15
+    hA=100*S; hB=V.ATTEND*S; hC=hB*V.RETAIN/100
     s=[f'<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" aria-hidden="true" style="position:absolute;left:0;top:0;">',
        f'<rect x="1" y="{top}" width="{xA-12}" height="{hA}" rx="{min(T["r"],16)}" fill="none" stroke="{P["dash"]}" stroke-width="2" stroke-dasharray="8 8"/>',
        band(xA+nw,top,top+hB,xB,top,top+hB,P['main']),band(xB+nw,top,top+hC,xC,top,top+hC,P['main']),
@@ -30,14 +35,14 @@ def sankey(W):
     tx=P['text']; mu=P['mute']; mainfg=P.get('mainfg',INK)
     A=lambda x,y,w,h,al='left': f'<div style="position:absolute;left:{x}px;top:{y}px;width:{w}px;text-align:{al};">{h}</div>'
     big=lambda v,c=tx: f'<div style="font-family:{T["df"]};font-size:34px;font-weight:{T["kw"]};letter-spacing:-.02em;margin-top:6px;white-space:nowrap;color:{c};">{v}</div>'
-    a=[A(xA-6,top-60,300,lab('02 活动报名审核',tx,17)),
-       A(xB-6,top-96,280,lab('03 活动开始',tx,17)+big('到场 52%')),
-       A(xC-6,top-96,220,lab('04 线索跟进',tx,17)+big('跟进后 '+V4.FINAL)),
-       A(24,top+28,xA-50,lab('01 社群发布活动',tx,17)+f'<div style="font-size:24px;font-weight:700;margin-top:14px;white-space:nowrap;color:{tx};">① 缺少曝光渠道</div>'),
-       A(xA+40,top+hB/2-18,xB-xA-70,f'<div style="font-size:24px;font-weight:700;color:{mainfg};">② 报名者画像不明确</div>'),
-       A(20,top+hA+drop+10,xA-40,f'<div style="font-size:24px;font-weight:700;color:{tx};">③ 到场率偏低</div><div style="font-size:20px;color:{mu};margin-top:4px;">未到场 48%</div>','right'),
-       A(xC-30,top+hA+drop+40,W-xC+30,f'<div style="font-size:24px;font-weight:700;color:{O};">④ 跟进缺乏优先级</div><div style="font-size:20px;color:{mu};margin-top:4px;">到场者中流失 85%</div>'),
-       A(xD-170,top+70+hC+24,250,lab('05 有效商机',tx,17)+f'<div style="font-family:{T["df"]};font-size:44px;font-weight:{T["kw"]};letter-spacing:-.03em;margin-top:6px;color:{tx};">{V4.FINAL}</div><div style="font-size:18px;color:{mu};margin-top:4px;">比例上限</div>','right')]
+    a=[A(xA-6,top-60,300,lab('02 '+V.STAGES[1][0],tx,17)),
+       A(xB-6,top-96,280,lab('03 '+V.STAGES[2][0],tx,17)+big(f'到场 {V.ATTEND}%')),
+       A(xC-6,top-96,220,lab('04 '+V.STAGES[3][0],tx,17)+big('跟进后 '+V4.FINAL)),
+       A(24,top+28,xA-50,lab('01 '+V.STAGES[0][0],tx,17)+f'<div style="font-size:24px;font-weight:700;margin-top:14px;white-space:nowrap;color:{tx};">① {V.STAGES[0][1]}</div>'),
+       A(xA+40,top+hB/2-18,xB-xA-70,f'<div style="font-size:24px;font-weight:700;color:{mainfg};">② {V.STAGES[1][1]}</div>'),
+       A(20,top+hA+drop+10,xA-40,f'<div style="font-size:24px;font-weight:700;color:{tx};">③ {V.STAGES[2][1]}</div><div style="font-size:20px;color:{mu};margin-top:4px;">未到场 {100-V.ATTEND}%</div>','right'),
+       A(xC-30,top+hA+drop+40,W-xC+30,f'<div style="font-size:24px;font-weight:700;color:{O};">④ {V.STAGES[3][1]}</div><div style="font-size:20px;color:{mu};margin-top:4px;">到场者中流失 {100-V.RETAIN}%</div>'),
+       A(xD-170,top+70+hC+24,250,lab('05 '+V.STAGES[4][0],tx,17)+f'<div style="font-family:{T["df"]};font-size:44px;font-weight:{T["kw"]};letter-spacing:-.03em;margin-top:6px;color:{tx};">{V4.FINAL}</div><div style="font-size:18px;color:{mu};margin-top:4px;">比例上限</div>','right')]
     return f'<div style="position:relative;width:{W}px;height:{H}px;">{"".join(s)}{"".join(a)}</div>'
 def kpis():
     out=''
@@ -53,13 +58,13 @@ def kpis():
 def conclusion():
     return (f'<div style="{T["concl"]}display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;">'
             f'<span style="font-family:{T["df"]};font-size:116px;font-weight:{T["kw"]};line-height:.85;letter-spacing:-.05em;color:{O};white-space:nowrap;">{V4.FINAL}</span>'
-            f'<div style="display:flex;flex-direction:column;gap:10px;"><span style="font-size:32px;font-weight:700;line-height:1.3;color:{T["concl_fg"]};">报名者中，最终可能成为有效商机的比例上限</span><span style="font-size:21px;color:{T["concl_mu"]};">按行业基准推算：到场率 52% × 跟进留存 15%（线索流失率 85%）</span></div></div>')
+            f'<div style="display:flex;flex-direction:column;gap:10px;"><span style="font-size:32px;font-weight:700;line-height:1.3;color:{T["concl_fg"]};">报名者中，最终可能成为有效商机的比例上限</span><span style="font-size:21px;color:{T["concl_mu"]};">按行业基准推算：到场率 {V.ATTEND}% × 跟进留存 {V.RETAIN}%（线索流失率 {100-V.RETAIN}%）</span></div></div>')
 def logo_cells(items, h=96):
     cell=f'height:{h}px;background:#fff;border-radius:{min(T["r"],20)}px;display:flex;align-items:center;justify-content:center;{T["logo_border"]}'
     return cell
 def walls():
     cell=logo_cells(None)
-    mem=''.join(f'<div style="{cell}"><img src="{s}" alt="{a}" style="height:{V.SIZE.get(a,int(h)-4)-4}px;max-width:78%;object-fit:contain;"></div>' for s,a,h in V.MEMBERS)+f'<div style="{cell}font-size:34px;color:{T["mute"]};">…</div>'
+    mem=''.join((f'<div style="{cell}"><img src="{s}" alt="{a}" style="height:{V.SIZE.get(a,int(h)-4)-4}px;max-width:78%;object-fit:contain;"></div>' if s else f'<div style="{cell}font-size:22px;font-weight:700;color:#8a8a8a;">{a}</div>') for s,a,h in V.MEMBERS)+f'<div style="{cell}font-size:34px;color:{T["mute"]};">…</div>'
     par=''
     for n,src,word in V.PARTNERS:
         if src and word: par+=f'<div style="{cell}gap:10px;"><img src="{src}" alt="" style="height:42px;width:42px;object-fit:contain;"><span style="font-size:22px;font-weight:700;color:{INK};white-space:nowrap;">{word}</span></div>'
@@ -76,7 +81,7 @@ def fixes():
         li=''.join(f'<div style="display:flex;flex-direction:column;gap:4px;"><span style="font-size:27px;font-weight:700;color:{T["after_fg"]};">{t}</span><span style="font-size:23px;line-height:1.55;color:{T["after_mu"]};">{d}</span></div>' for t,d in items)
         before=(f'<div style="background:{T["before_bg"]};border-radius:{T["r"]}px;padding:36px;display:flex;flex-direction:column;gap:20px;">{lab("BEFORE · 现状",T["before_mu"])}'
                 f'<div style="margin-top:auto;display:flex;flex-direction:column;gap:6px;"><span style="font-family:{T["df"]};font-size:76px;font-weight:{T["kw"]};line-height:.9;letter-spacing:-.04em;color:{T["before_fg"]};white-space:nowrap;">{bs}</span><span style="font-size:20px;color:{T["before_mu"]};">{bl}</span></div></div>')
-        after=(f'<div style="background:{T["after_bg"]};border-radius:{T["r"]}px;{T["after_border"]}padding:36px;display:flex;flex-direction:column;gap:18px;">{lab("AFTER · KNOCK〃",T["after_fg"])}{li}'
+        after=(f'<div style="background:{T["after_bg"]};border-radius:{T["r"]}px;{T["after_border"]}padding:36px;display:flex;flex-direction:column;gap:18px;">{lab("AFTER · "+V.BRAND,T["after_fg"])}{li}'
                f'<div style="margin-top:auto;{T["res_style"]}font-family:{T["df"]};font-size:38px;font-weight:{T["kw"]};letter-spacing:-.02em;line-height:1.2;">{res}</div></div>')
         arrow=f'<div style="display:flex;align-items:center;justify-content:center;"><svg width="44" height="24" viewBox="0 0 44 24" aria-hidden="true"><path d="M2 12h38M30 3l10 9-10 9" fill="none" stroke="{T["ink"]}" stroke-width="2.5"/></svg></div>'
         out+=(f'<div style="display:flex;flex-direction:column;gap:16px;"><div style="display:flex;justify-content:space-between;align-items:baseline;"><span style="font-family:{T["df"]};font-size:36px;font-weight:{T["kw"]};color:{T["ink"]};white-space:nowrap;">{"ABCD"[k]}　{pain}</span>{lab("环节 0"+str(si+1)+" · "+st,T["ink"])}</div>'
@@ -99,9 +104,9 @@ def build_theme(theme):
   {T["foot"](T)}
 </div>'''
     return body,T['bg'],T['tf']
-def foot_block(T,bg,fg,mu,logo,radius='0',cta_bg=Y,cta_fg=INK,cta_r=20):
+def foot_block(T,bg,fg,mu,dark=False,radius='0',cta_bg=Y,cta_fg=INK,cta_r=20):
     P=T['pad']
     return (f'<section style="margin:0 -{P}px;background:{bg};color:{fg};border-radius:{radius};padding:96px {P}px 56px;display:flex;flex-direction:column;gap:28px;">'
             f'{eyebrow("03"+T["sep"]+"WAITLIST",mu)}<h2 style="margin:0;font-family:{T["df"]};font-size:84px;font-weight:{T["dw"]};line-height:1.05;letter-spacing:{T["dt"]};white-space:nowrap;">{V.OFFER_T}</h2>'
-            f'<a href="https://knockknock.example/waitlist" style="align-self:flex-start;margin-top:12px;display:inline-flex;align-items:center;height:92px;padding:0 56px;border-radius:{cta_r}px;background:{cta_bg};color:{cta_fg};font-size:30px;font-weight:700;text-decoration:none;">加入 waitlist</a>'
-            f'<div style="margin-top:56px;border-top:1.5px solid {mu};padding-top:30px;display:flex;justify-content:space-between;align-items:center;"><img src="{logo}" alt="Knock〃" style="height:60px;width:auto;display:block;"><span style="font-size:24px;color:{mu};">Knock knock, who\'s there?</span></div></section>')
+            f'<a href="https://example.com/waitlist" style="align-self:flex-start;margin-top:12px;display:inline-flex;align-items:center;height:92px;padding:0 56px;border-radius:{cta_r}px;background:{cta_bg};color:{cta_fg};font-size:30px;font-weight:700;text-decoration:none;">加入 waitlist</a>'
+            f'<div style="margin-top:56px;border-top:1.5px solid {mu};padding-top:30px;display:flex;justify-content:space-between;align-items:center;">{logo(T,dark,60)}<span style="font-size:24px;color:{mu};">{V.SOURCES[:0]}</span></div></section>')
