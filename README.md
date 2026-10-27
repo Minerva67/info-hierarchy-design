@@ -5,7 +5,7 @@ A Claude Code skill for structuring outward-facing materials: information archit
 
 核心只有一句话：**先按读者自己的流程组织信息，再定层级，再给每块选可视化，最后才选风格。顺序不能反。**
 
-![五套主题预览](examples/theme-pub-top.jpg)
+![宣传海报](docs/poster.jpg)
 
 ## 什么时候用
 
@@ -26,9 +26,9 @@ A Claude Code skill for structuring outward-facing materials: information archit
 2. **用读者自己的流程当骨架**：每个环节挂「痛点 → 数据 → 方案 → 结果」，找出共同的根因。
 3. **三层信息层级**：3 秒看结论，15 秒看痛点和数字，细读看说明；全页只用一处强调色。
 4. **按数据的形状选可视化**：逐级流失用连接条形图或桑基图，现状到结果用 Before / After，洞察用场景示意图。
-5. **结构定了再选风格**：同一份内容一键换 5 套主题。
+5. **结构定了再选风格**：同一份内容换皮比较，14 家品牌设计语言可借。
 6. **文案口径**：平实书面、只写读者得到什么、数字诚实、姿态对等、不写承诺。
-7. **渲染自检**：headless Chrome 本地出图、自动定高，检查断行和溢出。
+7. **渲染自检**：出图后检查断行、溢出和大块空白。
 
 ## 里面有什么
 
@@ -37,25 +37,13 @@ SKILL.md                      完整流程 + 反模式清单
 references/
   viz-patterns.md             6 种可视化的实现要点
   brand-styles/               14 家品牌设计语言（README + tokens.json）
-scripts/
-  content.py                  示例内容（只改这个就能换成你的项目）
-  th_b2b.py                   主题引擎：桑基漏斗、KPI、结论、Before/After
-  th_b2b_themes.py            5 套主题：刊物 / 编辑 / 深色看板 / Cohere 式 / Intercom 式
-  fit.sh render.py ...        渲染与自动定高
-examples/                     5 套主题的示例图
 ```
-
-| 刊物（Mastercard 式） | 编辑（Claude 式） | 深色看板 | Cohere 式 | Intercom 式 |
-|---|---|---|---|---|
-| ![](examples/theme-pub.jpg) | ![](examples/theme-edit.jpg) | ![](examples/theme-dark.jpg) | ![](examples/theme-cohere.jpg) | ![](examples/theme-intercom.jpg) |
 
 ## 安装
 
 ```bash
 git clone https://github.com/Minerva67/info-hierarchy-design ~/.claude/skills/info-hierarchy-design
 ```
-
-出图脚本需要 Python 3 + Pillow 和本机 Chrome，用法见 `scripts/README.md`。
 
 ## 致谢与授权
 
